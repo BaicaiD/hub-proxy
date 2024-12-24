@@ -42,12 +42,12 @@ jobs:
         run: |
           # 进入 ghproxy 目录，确保 Docker 构建基于该目录
           cd ghproxy
-
+          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           # 使用 ghproxy 目录作为构建上下文，并明确指定 Dockerfile
           docker buildx build --push \
             --platform linux/amd64,linux/arm64 \
-            --tag ghcr.io/${{ github.repository }}:${{ env.VERSION }} \
-            --tag ghcr.io/${{ github.repository }}:latest \
+            --tag ghcr.io/${{ REPO_NAME }}:${{ env.VERSION }} \
+            --tag ghcr.io/${{ REPO_NAME }}:latest \
             --build-arg VERSION=${{ env.VERSION }} \
             -f Dockerfile .  # 指定 Dockerfile 文件并将上下文设置为当前目录
         env:
